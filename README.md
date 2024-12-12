@@ -19,7 +19,7 @@ El objetivo de este análisis es comprender las características demográficas, 
 - **src/data/**: Contiene el archivo `Perfil_turístico.csv`.
 - **src/utils/**: Funciones auxiliares para el análisis.
 - **src/memoria.ipynb**: Notebook con breve resumen del EDA.
-- - **src/notebook.ipynb**: Notebook principal con el EDA completo.
+- **src/notebook.ipynb**: Notebook principal con el EDA completo.
 
 ## Tecnologías
 - Lenguaje: Python
