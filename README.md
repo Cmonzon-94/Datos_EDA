@@ -13,7 +13,7 @@ Welcome to this repository showcases various data science projects and studies c
 Gran Canaria, como uno de los destinos turísticos más importantes de España, atrae a millones de turistas anualmente. Debido a la pandemia sufrida en 2020, el turismo se ha visto afectado considerablemente y con este análisis se busca identificar los cambios claves sufridos por dicho acontecimineto con la finalidad de plantearse estrategias de marketing y optimizar la experiencia del turismo ante posibles futuros factores adversos.
 
 ## Objetivos
-El objetivo de este análisis es comprender las características demográficas, comportamientos, preferencias y patrones de los turistas en periodo de postpandemia, utilizando como base la encuesta de gasto turístico realizada por el Instituto Nacional de estadísticas [ISTAC] (https://www.gobiernodecanarias.org/istac/estadisticas/sectorservicios/hosteleriayturismo/demanda/C00028A.html)
+El objetivo de este análisis es comprender las características demográficas, comportamientos, preferencias y patrones de los turistas en periodo de postpandemia, utilizando como base la encuesta de gasto turístico realizada por el Instituto Nacional de estadísticas [ISTAC](https://www.gobiernodecanarias.org/istac/estadisticas/sectorservicios/hosteleriayturismo/demanda/C00028A.html/)
 
 ## Estructura del Proyecto
 - **src/data/**: Contiene el archivo `Perfil_turístico.csv`.
