@@ -27,10 +27,10 @@ El objetivo de este análisis es comprender las características demográficas, 
 - Fuente de datos: ISTAC
 
 ## Contenido del análisis
-Exploración de datos: Limpieza y preparación de los datasets para su análisis.
-Análisis de los datos: Análislis univariante y multivariante de los datos para determinar la importancia de los datos y la relación entre ellos.
-Visualización: Creación de gráficos para identificar patrones de comportamiento.
-Resultados: 
+- Exploración de datos: Limpieza y preparación de los datasets para su análisis.
+- Análisis de los datos: Análislis univariante y multivariante de los datos para determinar la importancia de los datos y la relación entre ellos.
+- Visualización: Creación de gráficos para identificar patrones de comportamiento.
+- Resultados: Cambios en el comportamiendo del turista
 
 ## Cómo Ejecutar el Proyecto
 1. Clona el repositorio.
