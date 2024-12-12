@@ -1,0 +1,52 @@
+#Librerias que vamos a usar a lo largo del EDA
+import numpy as np
+import datetime as dt
+import matplotlib.pyplot as plt
+import pandas as pd
+import seaborn as sns
+from scipy.stats import chi2_contingency
+from scipy.stats import ttest_ind
+from utils import plot_categorical_numerical_relationship, plot_combined_graphs, \
+    pinta_distribucion_categoricas, plot_grouped_boxplots, plot_categorical_relationship_fin, cardi
+
+#Llamamos al csv y creamos el df de perfil turistico
+df_perfil_turistico = pd.read_csv("c:/Users/Carol/Documents/GitHub/Datos_EDA/data/Perfil_turístico.csv", sep=";", encoding="latin1")
+#Limpieza de variables categóticas
+# Sexo
+df_perfil_turistico["Sexo"] = df_perfil_turistico["Sexo"].replace({1: "Hombre", 6: "Mujer"})
+#Nivel educativo
+df_perfil_turistico["Nivel_educativo"] = df_perfil_turistico["Nivel_educativo"].replace({1:"Sin estudios", 2:"Estudios primarios", 3:"Estudios secundarios", 4:"Estudios superiores"})
+#Situacion laboral
+df_perfil_turistico["Situacion_laboral"] = df_perfil_turistico["Situacion_laboral"].replace({ 1:"Asalariado", 2:"Autonomo", 3:"Empresario_peque", 4:"Empresario_grande",
+5:"Desempleado", 6:"Estudiante", 7:"Jubilado", 8:"Incapacitado", 9:"Militar", 10:"Dependients", 11:"Otros"})
+#Ingresos
+df_perfil_turistico["Ingresos"] = df_perfil_turistico["Ingresos"].replace({1:"Menos 25.000", 2:"25.000-49.999",3:"50.000-74.999", 4:"+75.000"})
+#Tipo de alojamiento
+df_perfil_turistico["Tipo_alojamiento"] = df_perfil_turistico["Tipo_alojamiento"].replace({1:"Hotel 1-2-3*", 2:"Hotel 4*",3:"Hotel 5*", 4:"Apartamento/Villa", 5:"Vivienda/airbnb", 6:"Alojamiento privado", 7:"Alojamiento rural"})
+#Satisfacción
+df_perfil_turistico["Satisfacción"] = df_perfil_turistico["Satisfacción"].replace({1:"(1)", 2:"(2)",3:"(3)", 4:"(4)", 5:"(5)", 6:"(6)", 7:"(7)",8:"(8)",9:"(9)",10:"(10)"})
+#Repetiría
+df_perfil_turistico["Repetiria"] = df_perfil_turistico["Repetiria"].replace({1:"(1)", 2:"(2)",3:"(3)", 4:"(4)", 5:"(5)", 6:"(6)", 7:"(7)",8:"(8)",9:"(9)",10:"(10)"})
+#Recomendación
+df_perfil_turistico["Recomendaria"] = df_perfil_turistico["Recomendaria"].replace({1:"(1)", 2:"(2)",3:"(3)", 4:"(4)", 5:"(5)", 6:"(6)", 7:"(7)",8:"(8)",9:"(9)",10:"(10)"})
+#Calificacion
+df_perfil_turistico["Calificacion"] = df_perfil_turistico["Calificacion"].replace({1:"Mucho peor de lo esperado", 2:"Peor de lo esperado",3:"A la altura de las expectativas", 4:"Mejor de lo esperado", 5:"Mucho mejor de lo esperado"})
+#Creamos una columna con el tipo de acompañante para tener en la misma columna el "modo_viaje" y asi estudiarla mejor
+columnas_tipo_acompañante = ["Viaja_solo", "Viaja_pareja", "Viaja_hijo", "Viaja_amigos", "Viaja_otros"]
+df_perfil_turistico["Modo_viaje"] = df_perfil_turistico.apply(lambda row: ', '.join(col for col in columnas_tipo_acompañante if row[col] == "Si"), axis=1)
+#Eliminamos la columna Tipo de viaje
+df_perfil_turistico = df_perfil_turistico.drop(columns=["Viaja_pareja","Viaja_hijo","Viaja_otros","Viaja_solo","Viaja_amigos"])
+#Mismo procedimiento para el tipo de canal
+columnas_tipo_canal = ["Canal_visitas_anteriores", "Canal_familia", "Canal_redes_sociales", "Canal_otro"]
+df_perfil_turistico["Canal"] = df_perfil_turistico.apply(lambda row: ', '.join(col for col in columnas_tipo_canal if row[col] == "Si"), axis=1)
+df_perfil_turistico = df_perfil_turistico.drop(columns=["Canal_visitas_anteriores", "Canal_familia", "Canal_redes_sociales", "Canal_otro"])
+#Mismo procedimiento para actividades realizadas
+columnas_actividad = ["A_playa","A_gastronomia","A_ocio","A_senderismo","A_otro_deporte"]
+df_perfil_turistico["Actividades"] = df_perfil_turistico.apply(lambda row: ', '.join(col for col in columnas_actividad if row[col] == "Si"), axis=1)
+df_perfil_turistico = df_perfil_turistico.drop(columns=["A_playa","A_gastronomia","A_ocio","A_senderismo","A_otro_deporte"])
+# Convertir algunas columnas a float
+df_perfil_turistico['Edad'] = df_perfil_turistico['Edad'].astype(float)
+# Calculemos ahora su cardinalidad
+cardinalidad = round((df_perfil_turistico.nunique() /len (df_perfil_turistico))*100,2)
+#Variables categóricas 
+variables_categoricas=["Sexo","Nacionalidad","Tipo_alojamiento","Satisfacción","Calificacion","Repetiria","Recomendaria","Nivel_educativo","Situacion_laboral","Ingresos", "Modo_viaje","Canal","Actividades"]
