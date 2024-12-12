@@ -8,7 +8,7 @@ Welcome to this repository showcases various data science projects and studies c
 ## Projects:
 
 ###  [Analysis of the tourism profile in post-pandemic Gran Canaria](https://github.com/Cmonzon-94/Datos_EDA)
-![image]([https://github.com/)](https://github.com/Cmonzon-94/Datos_EDA/blob/main/img/portada.jpg)
+![image]([https://github.com/Cmonzon-94/Datos_EDA/blob/main/img/portada.jpg)]
  
 ## Descripción del Proyecto
 Gran Canaria, como uno de los destinos turísticos más importantes de España, atrae a millones de turistas anualmente. Debido a la pandemia sufrida en 2020, el turismo se ha visto afectado considerablemente y con este análisis se busca identificar los cambios claves sufridos por dicho acontecimineto con la finalidad de plantearse estrategias de marketing y optimizar la experiencia del turismo ante posibles futuros factores adversos.
