@@ -22,40 +22,61 @@ def cardi(df_in,umbral_categoria, umbral_continua):
     df_cardi["Clasificacion"]=clasificacion
     return df_cardi
 
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
 def pinta_distribucion_categoricas(df, columnas_categoricas, relativa=False, mostrar_valores=False):
     num_columnas = len(columnas_categoricas)
     num_filas = (num_columnas // 2) + (num_columnas % 2)
 
-    fig, axes = plt.subplots(num_filas, 2, figsize=(15, 5 * num_filas))
-    axes = axes.flatten() 
+    # Aumentar el tamaño de la figura
+    fig, axes = plt.subplots(num_filas, 2, figsize=(20, 8 * num_filas))  # Ajuste de tamaño
+    axes = axes.flatten()
 
     for i, col in enumerate(columnas_categoricas):
         ax = axes[i]
         if relativa:
             total = df[col].value_counts().sum()
-            serie = df[col].value_counts().apply(lambda x: x / total)
-            sns.barplot(x=serie.index, y=serie, ax=ax, palette='viridis', hue = serie.index, legend = False)
-            ax.set_ylabel('Frecuencia Relativa')
+            # Calcular la frecuencia relativa en porcentaje
+            serie = df[col].value_counts().apply(lambda x: x / total * 100)  # Convertir a porcentaje
+            sns.barplot(x=serie.index, y=serie, ax=ax, palette='Pastel2', hue=serie.index, legend=False)
+            ax.set_ylabel('Frecuencia Relativa (%)')  # Añadir el símbolo de porcentaje
         else:
+            # Calcular la frecuencia absoluta
             serie = df[col].value_counts()
-            sns.barplot(x=serie.index, y=serie, ax=ax, palette='viridis', hue = serie.index, legend = False)
-            ax.set_ylabel('Frecuencia')
+            sns.barplot(x=serie.index, y=serie, ax=ax, palette='Pastel2', hue=serie.index, legend=False)
+            ax.set_ylabel('Frecuencia Absoluta')
 
         ax.set_title(f'Distribución de {col}')
         ax.set_xlabel('')
         ax.tick_params(axis='x', rotation=45)
 
+
         if mostrar_valores:
             for p in ax.patches:
                 height = p.get_height()
-                ax.annotate(f'{height:.2f}', (p.get_x() + p.get_width() / 2., height), 
-                            ha='center', va='center', xytext=(0, 9), textcoords='offset points')
+                if relativa:
+                    # Mostrar los valores como porcentaje sin decimales
+                    ax.annotate(f'{height:.0f}%', (p.get_x() + p.get_width() / 2., height),
+                                ha='center', va='center', xytext=(0, 9), textcoords='offset points')
+                else:
+                    # Mostrar los valores absolutos como números enteros
+                    ax.annotate(f'{height:.0f}', (p.get_x() + p.get_width() / 2., height),
+                                ha='center', va='center', xytext=(0, 9), textcoords='offset points')
 
+    # Ocultar los subgráficos no utilizados
     for j in range(i + 1, num_filas * 2):
         axes[j].axis('off')
 
     plt.tight_layout()
     plt.show()
+
 
 
 def plot_categorical_relationship_fin(df, cat_col1, cat_col2, relative_freq=False, show_values=False, size_group = 5):
