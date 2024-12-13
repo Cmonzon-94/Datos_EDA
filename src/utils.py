@@ -350,3 +350,25 @@ def plot_multiple_boxplots(df, columns, dim_matriz_visual = 2):
 
     plt.tight_layout()
     plt.show()
+
+def plot_categorical_numerical_histograms(df, cat_col, num_col):
+    unique_values = df[cat_col].unique()
+    num_unique_values = len(unique_values)
+    num_cols = 3
+    num_rows = (num_unique_values + num_cols - 1) // num_cols
+    
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 5 * num_rows))
+    axes = axes.flatten()
+    
+    for i, value in enumerate(unique_values):
+        subset = df[df[cat_col] == value]
+        sns.histplot(subset[num_col], ax=axes[i], kde=True)
+        axes[i].set_title(f'{value}')
+    
+    fig.suptitle(f'Histograma de {num_col} por {cat_col}')
+
+    for j in range(i + 1, len(axes)):
+        fig.delaxes(axes[j])
+    
+    plt.tight_layout()
+    plt.show()
