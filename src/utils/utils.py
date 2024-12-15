@@ -386,3 +386,16 @@ def plot_categorical_numerical_boxplots(df, categorical_columns, numerical_colum
             plt.xticks(rotation=45)
             plt.show()
         color_idx += 1
+
+def plot_scatter(df, num_col1, num_col2, cat_col=None, point_size=50):
+    plt.figure(figsize=(10, 6))
+    
+    if cat_col:
+        sns.scatterplot(data=df, x=num_col1, y=num_col2, hue=cat_col, s=point_size)
+    else:
+        sns.scatterplot(data=df, x=num_col1, y=num_col2, s=point_size)
+    
+    plt.title(f'Diagrama de dispersión de {num_col1} vs {num_col2}')
+    plt.xlabel(num_col1)
+    plt.ylabel(num_col2)
+    plt.show()
