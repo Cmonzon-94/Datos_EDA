@@ -1,4 +1,4 @@
-df_perfil_turistico = "./data/Perfil_turístico.csv"
+DF_DATOS = "./data/Perfil_turístico.csv"
 df_2019 = "./data/Perfil_turístico.csv"
 df_2020 = "./data/Perfil_turístico.csv"
 Sexo = "Sexo"
