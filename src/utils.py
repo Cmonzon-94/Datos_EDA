@@ -372,3 +372,17 @@ def plot_categorical_numerical_histograms(df, cat_col, num_col):
     
     plt.tight_layout()
     plt.show()
+
+def plot_categorical_numerical_boxplots(df, categorical_columns, numerical_columns):
+    colors = sns.color_palette("husl", len(categorical_columns) * len(numerical_columns))
+    color_idx = 0
+    for cat_col in categorical_columns:
+        for num_col in numerical_columns:
+            plt.figure(figsize=(10, 6))
+            sns.boxplot(x=df[cat_col], y=df[num_col], palette=[colors[color_idx]])
+            plt.title(f'Boxplot de {num_col} por {cat_col}')
+            plt.xlabel(cat_col)
+            plt.ylabel(num_col)
+            plt.xticks(rotation=45)
+            plt.show()
+        color_idx += 1
