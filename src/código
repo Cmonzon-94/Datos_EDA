@@ -6,9 +6,10 @@ import pandas as pd
 import seaborn as sns
 from collections import Counter
 from scipy.stats import chi2_contingency, pearsonr, ttest_ind, f_oneway
-from utils import plot_categorical_numerical_relationship, plot_grouped_boxplots, plot_multiple_boxplots,\
-     plot_categorical_relationship_fin,plot_grouped_histograms, cardi, plot_numerical_histograms, \
-     pinta_distribucion_categoricas,plot_categorical_numerical_histograms, plot_categorical_numerical_boxplots 
+import sys
+sys.path.insert(0,"../utils")
+import utils as funciones
+import variables as vari
 
 #Llamamos al csv y creamos el df de perfil turistico
 df_perfil_turistico = pd.read_csv("./data/Perfil_turístico.csv", sep=";", encoding="latin1")
