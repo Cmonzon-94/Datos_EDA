@@ -340,13 +340,6 @@ def boxplot_alojamiento_hogar(df, x_col, y_col, titulo, xlabel, ylabel):
 
 #gráfico de dispersión (pairplot) entre todas las variables numéricas de un DataFrame.
 def graficar_dispersión_variables(df, variables_numericas):
-    """
-    Función para crear un gráfico de dispersión (pairplot) entre todas las variables numéricas de un DataFrame.
-    
-    Parámetros:
-    df (DataFrame): El DataFrame que contiene los datos.
-    variables_numericas (list): Lista con los nombres de las columnas numéricas a incluir en el gráfico.
-    """
     plt.figure(figsize=(12, 8))
     sns.pairplot(df[variables_numericas])
     plt.show()
