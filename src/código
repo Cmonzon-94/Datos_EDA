@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 from scipy.stats import stats
+from sklearn.decomposition import PCA
+from sklearn.preprocessing import StandardScaler
 import sys
 sys.path.append('utils')
 
@@ -33,7 +35,9 @@ columnas_tipo_acompañante = ["Viaja_solo", "Viaja_pareja", "Viaja_hijo", "Viaja
 df_perfil_turistico["Modo_viaje"] = df_perfil_turistico.apply(lambda row: ', '.join(col for col in columnas_tipo_acompañante if row[col] == "Si"), axis=1)
 df_perfil_turistico = df_perfil_turistico.drop(columns=["Viaja_pareja","Viaja_hijo","Viaja_otros","Viaja_solo","Viaja_amigos"])
 # Convertir algunas columnas a float
-df_perfil_turistico["Edad"] = df_perfil_turistico["Edad"].astype(float)
+df_perfil_turistico['Edad'] = df_perfil_turistico['Edad'].astype(float)
+df_perfil_turistico['Noches'] = df_perfil_turistico['Noches'].astype(float)
+df_perfil_turistico['Personas_hogar'] = df_perfil_turistico['Personas_hogar'].astype(float)
 # Reemplazar valores fuera del rango por la mediana
 for var in variables_numericas:
     q1 = df_perfil_turistico[var].quantile(0.25)
