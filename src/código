@@ -1,13 +1,12 @@
 #Librerias que vamos a usar a lo largo del EDA
 import numpy as np
-import datetime as dt
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from collections import Counter
-from scipy.stats import chi2_contingency, pearsonr, ttest_ind, f_oneway
+from scipy.stats import stats
 import sys
-sys.path.insert(0,"../utils")
+sys.path.append('utils')
+
 import utils as funciones
 import variables as vari
 
@@ -33,10 +32,19 @@ df_perfil_turistico["Calificacion"] = df_perfil_turistico["Calificacion"].replac
 columnas_tipo_acompañante = ["Viaja_solo", "Viaja_pareja", "Viaja_hijo", "Viaja_amigos", "Viaja_otros"]
 df_perfil_turistico["Modo_viaje"] = df_perfil_turistico.apply(lambda row: ', '.join(col for col in columnas_tipo_acompañante if row[col] == "Si"), axis=1)
 df_perfil_turistico = df_perfil_turistico.drop(columns=["Viaja_pareja","Viaja_hijo","Viaja_otros","Viaja_solo","Viaja_amigos"])
-#Unificación columna de gastos
-df_perfil_turistico["Gastos_totales"] = (df_perfil_turistico["Coste_vuelos"] +df_perfil_turistico["Coste_alojamiento"] +df_perfil_turistico["Gastos"])
 # Convertir algunas columnas a float
 df_perfil_turistico["Edad"] = df_perfil_turistico["Edad"].astype(float)
+# Reemplazar valores fuera del rango por la mediana
+for var in variables_numericas:
+    q1 = df_perfil_turistico[var].quantile(0.25)
+    q3 = df_perfil_turistico[var].quantile(0.75)
+    iqr = q3 - q1
+    lower_bound = q1 - 1.5 * iqr
+    upper_bound = q3 + 1.5 * iqr
+
+    median = df_perfil_turistico[var].median()
+    df_perfil_turistico[var] = df_perfil_turistico[var].apply(lambda x: median if (x < lower_bound or x > upper_bound) else x)
+
 #ESTUDIO DE LOS DATOS
 #Datos prepandemia
 df_2019 = df_perfil_turistico[df_perfil_turistico['Año'] == 2019]
