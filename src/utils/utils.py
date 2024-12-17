@@ -168,6 +168,25 @@ def plot_duracion_promedio_por_nacionalidad_2022(duracion_promedio_df_2022):
     # Mostrar gráfico
     plt.show()
 
+#Turistas por nacionalidad y cuatrimestres
+def graficar_turistas_por_nacionalidad_y_cuatrimestre(viaje_2019, viaje_2022):
+    # Crear un gráfico de barras apiladas para 2019 y 2022
+    fig, ax = plt.subplots(1, 2, figsize=(15, 8))
+    # Gráfico para 2019
+    viaje_2019.plot(kind='bar', stacked=True, ax=ax[0], colormap='Set3')
+    ax[0].set_title('Distribución de turistas por Nacionalidad y Cuatrimestre (2019)')
+    ax[0].set_xlabel('Nacionalidad')
+    ax[0].set_ylabel('Número de Turistas')
+    ax[0].legend(title='Cuatrimestre', bbox_to_anchor=(1.05, 1), loc='upper left')
+    # Gráfico para 2022
+    viaje_2022.plot(kind='bar', stacked=True, ax=ax[1], colormap='Set3')
+    ax[1].set_title('Distribución de turistas por Nacionalidad y Cuatrimestre (2022)')
+    ax[1].set_xlabel('Nacionalidad')
+    ax[1].set_ylabel('Número de Turistas')
+    ax[1].legend(title='Cuatrimestre', bbox_to_anchor=(1.05, 1), loc='upper left')
+    plt.tight_layout()
+    plt.show()
+
 
 # Gráfico de barras comparativo
 
