@@ -3,14 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
-from scipy.stats import stats
+from scipy.stats import stats, f_oneway, chi2_contingency
 from sklearn.decomposition import PCA
 from sklearn.preprocessing import StandardScaler
+from sklearn.cluster import KMeans
 import sys
 sys.path.append('utils')
-
 import utils as funciones
-import variables as vari
 
 #Llamamos al csv y creamos el df de perfil turistico
 df_perfil_turistico = pd.read_csv("./data/Perfil_turístico.csv", sep=";", encoding="latin1")
@@ -38,6 +37,7 @@ df_perfil_turistico = df_perfil_turistico.drop(columns=["Viaja_pareja","Viaja_hi
 df_perfil_turistico['Edad'] = df_perfil_turistico['Edad'].astype(float)
 df_perfil_turistico['Noches'] = df_perfil_turistico['Noches'].astype(float)
 df_perfil_turistico['Personas_hogar'] = df_perfil_turistico['Personas_hogar'].astype(float)
+variables_numericas=["Edad","Noches","Coste_vuelos","Coste_alojamiento","Gastos","Horas_fuera_alojamiento","Visitas_totales_Islas","Visitas_total_GC","Personas_hogar"]
 # Reemplazar valores fuera del rango por la mediana
 for var in variables_numericas:
     q1 = df_perfil_turistico[var].quantile(0.25)
@@ -54,6 +54,7 @@ for var in variables_numericas:
 df_2019 = df_perfil_turistico[df_perfil_turistico['Año'] == 2019]
 #Datos postpandemia
 df_2022 = df_perfil_turistico[df_perfil_turistico['Año'] == 2022]
+#Conjunto 
+df_2019_2022 = df_perfil_turistico[df_perfil_turistico['Año'].isin([2019, 2022])]
 #Definimos grupos de variables
 variables_categoricas=["Sexo","Nacionalidad","Tipo_alojamiento","Calificacion","Repetiria","Nivel_educativo","Situacion_laboral","Ingresos", "Modo_viaje"]
-variables_numericas=["Edad","Noches","Coste_vuelos","Coste_alojamiento","Gastos","Horas_fuera_alojamiento","Visitas_totales_Islas","Visitas_total_GC","Personas_hogar"]

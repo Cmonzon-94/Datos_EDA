@@ -316,8 +316,10 @@ def perfil_sociodemografico(edad_promedio_nacionalidad_ano,
     plt.ylabel('Número Promedio de Personas en el Hogar')
     plt.title('Número Promedio de Personas en el Hogar por Nacionalidad y Año (2019 vs 2022)')
     plt.xticks(rotation=90)
+    plt.legend(False)  # This removes the legend
     plt.tight_layout()
     plt.show()
+
 #Nacionalidad por sexo 2022
 def grafico_sexo_por_nacionalidad_2022(df, año=2022):
     # Filtrar los datos solo para el año 2022
@@ -412,5 +414,40 @@ def graficar_clusters_pca(pca_df, df, cluster_column):
     # Ajustar la leyenda
     plt.legend(title="Cluster", bbox_to_anchor=(1, 1))
     # Ajustar layout y mostrar gráfico
+    plt.tight_layout()
+    plt.show()
+
+def plot_categorical_numerical_boxplots(df, categorical_columns, numerical_columns):
+    colors = sns.color_palette("husl", len(categorical_columns) * len(numerical_columns))
+    color_idx = 0
+    for cat_col in categorical_columns:
+        for num_col in numerical_columns:
+            plt.figure(figsize=(10, 6))
+            sns.boxplot(x=df[cat_col], y=df[num_col])
+            plt.title(f'Boxplot de {num_col} por {cat_col}')
+            plt.xlabel(cat_col)
+            plt.ylabel(num_col)
+            plt.xticks(rotation=45)
+            plt.show()
+        color_idx += 1   
+def plot_categorical_numerical_histograms(df, cat_col, num_col):
+    unique_values = df[cat_col].unique()
+    num_unique_values = len(unique_values)
+    num_cols = 3
+    num_rows = (num_unique_values + num_cols - 1) // num_cols
+    
+    fig, axes = plt.subplots(num_rows, num_cols, figsize=(15, 5 * num_rows))
+    axes = axes.flatten()
+    
+    for i, value in enumerate(unique_values):
+        subset = df[df[cat_col] == value]
+        sns.histplot(subset[num_col], ax=axes[i], kde=True)
+        axes[i].set_title(f'{value}')
+    
+    fig.suptitle(f'Histograma de {num_col} por {cat_col}')
+
+    for j in range(i + 1, len(axes)):
+        fig.delaxes(axes[j])
+    
     plt.tight_layout()
     plt.show()
