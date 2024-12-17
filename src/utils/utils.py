@@ -261,7 +261,7 @@ def plot_tipo_alojamiento_por_cuatrimestre(preferencia_alojamiento_2019, prefere
 def plot_recomendacion_por_nacionalidad(recomendacion_nacionalidad_2022):
     # Crear el gráfico de barras apiladas
     plt.figure(figsize=(12, 6))
-    recomendacion_nacionalidad_2022.plot(kind='bar', stacked=True, colormap='Pastel2')
+    recomendacion_nacionalidad_2022.plot(kind='bar', stacked=True, colormap='coolwarm')
     # Ajustes para mejorar la visualización
     plt.xlabel('Nacionalidad')
     plt.ylabel('Número de Turistas')
@@ -275,27 +275,17 @@ def plot_recomendacion_por_nacionalidad(recomendacion_nacionalidad_2022):
 #Graficar el perfil sociodemográfico 
 import matplotlib.pyplot as plt
 
-def perfil_sociodemografico(edad_promedio_nacionalidad_ano, sexo_nacionalidad_ano, 
+def perfil_sociodemografico(edad_promedio_nacionalidad_ano, 
                                      educacion_nacionalidad_ano, laboral_nacionalidad_ano, 
                                      personas_hogar_nacionalidad_ano):
 
     # Gráfico de Edad Promedio por Nacionalidad y Año
-    plt.figure(figsize=(12, 6))
+    plt.figure(figsize=(16, 8))
     edad_promedio_nacionalidad_ano.plot(kind='bar', color=['#FFDFBA', '#E7BAFF'], width=0.8)
     plt.xlabel('Nacionalidad')
     plt.ylabel('Edad Promedio')
-    plt.title('Edad Promedio por Nacionalidad y Año (2019 vs 2022)')
+    plt.title('Edad Promedio por Nacionalidad y Año')
     plt.xticks(rotation=90)
-    plt.tight_layout()
-    plt.show()
-
-    # Gráfico de Distribución de Sexo por Nacionalidad y Año
-    sexo_nacionalidad_ano.plot(kind='bar', stacked=True, figsize=(12, 6), colormap='Pastel1')
-    plt.xlabel('Nacionalidad')
-    plt.ylabel('Número de Turistas')
-    plt.title('Distribución de Sexo por Nacionalidad y Año (2019 vs 2022)')
-    plt.xticks(rotation=90)
-    plt.legend(title="Sexo", bbox_to_anchor=(1, 1))
     plt.tight_layout()
     plt.show()
 
@@ -326,6 +316,27 @@ def perfil_sociodemografico(edad_promedio_nacionalidad_ano, sexo_nacionalidad_an
     plt.ylabel('Número Promedio de Personas en el Hogar')
     plt.title('Número Promedio de Personas en el Hogar por Nacionalidad y Año (2019 vs 2022)')
     plt.xticks(rotation=90)
+    plt.tight_layout()
+    plt.show()
+#Nacionalidad por sexo 2022
+def grafico_sexo_por_nacionalidad_2022(df, año=2022):
+    # Filtrar los datos solo para el año 2022
+    df_2022 = df[df['Año'] == año]
+    
+    # Crear tabla de contingencia para Nacionalidad y Sexo
+    sexo_nacionalidad_2022 = pd.crosstab(df_2022['Nacionalidad'], df_2022['Sexo'])
+    
+    # Crear gráfico de barras apiladas
+    sexo_nacionalidad_2022.plot(kind='bar', stacked=True, figsize=(15, 8), colormap='Pastel2')
+
+    # Ajustes de etiquetas y título
+    plt.xlabel('Nacionalidad')
+    plt.ylabel('Número de Turistas')
+    plt.title(f'Distribución de Sexo por Nacionalidad ({año})')
+    plt.xticks(rotation=90)
+    plt.legend(title="Sexo", bbox_to_anchor=(1.05, 1), loc='upper left')
+    
+    # Ajuste del layout para evitar superposiciones
     plt.tight_layout()
     plt.show()
 
