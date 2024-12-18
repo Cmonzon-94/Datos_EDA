@@ -255,81 +255,62 @@ def plot_tipo_alojamiento_por_cuatrimestre(preferencia_alojamiento_2019, prefere
     # Mostrar el gráfico
     plt.show()
 
-"""    Función para graficar la recomendación del destino por nacionalidad en 2022
-    usando un gráfico de barras apiladas."""
-
-def plot_recomendacion_por_nacionalidad(recomendacion_nacionalidad_2022):
-    # Configurar colores
-    colores = ['#76C7C0', '#FF6F61']
-
-    # Crear subgráficos para separar totales y porcentajes
-    fig, axes = plt.subplots(2, 1, figsize=(12, 12), gridspec_kw={'height_ratios': [2, 1]})
-
-    # Gráfico de barras apiladas: Conteo absoluto de "Sí" y "No"
-    recomendacion_nacionalidad_2022[['Sí', 'No']].plot(kind='bar', stacked=True, ax=axes[0], color=colores)
-    axes[0].set_title('Número de Turistas que Repetirían el Viaje por Nacionalidad (2022)')
-    axes[0].set_xlabel('Nacionalidad')
-    axes[0].set_ylabel('Número de Turistas')
-    axes[0].legend(title='Repetiría', loc='upper right')
-    axes[0].tick_params(axis='x', rotation=90)
-
-    # Gráfico de líneas: Porcentaje de respuestas afirmativas
-    recomendacion_nacionalidad_2022['Porcentaje_Sí'].plot(kind='line', ax=axes[1], color='#76C7C0', marker='o', label='Porcentaje Sí')
-    recomendacion_nacionalidad_2022['Porcentaje_No'].plot(kind='line', ax=axes[1], color='#FF6F61', marker='o', label='Porcentaje No')
-    axes[1].set_title('Porcentaje de Turistas que Repetirían el Viaje por Nacionalidad (2022)')
-    axes[1].set_xlabel('Nacionalidad')
-    axes[1].set_ylabel('Porcentaje (%)')
-    axes[1].legend(loc='upper right')
-    axes[1].tick_params(axis='x', rotation=90)
-
-    plt.tight_layout()
-    plt.show()
-
 #Graficar el perfil sociodemográfico 
-import matplotlib.pyplot as plt
 
-def perfil_sociodemografico(edad_promedio_nacionalidad_ano, 
-                                     educacion_nacionalidad_ano, laboral_nacionalidad_ano, 
-                                     personas_hogar_nacionalidad_ano):
+def graficar_perfil_sociodemografico(df_perfil_turistico):
 
-    # Gráfico de Edad Promedio por Nacionalidad y Año
-    plt.figure(figsize=(16, 8))
-    edad_promedio_nacionalidad_ano.plot(kind='bar', color=['#FFDFBA', '#E7BAFF'], width=0.8)
-    plt.xlabel('Nacionalidad')
-    plt.ylabel('Edad Promedio')
-    plt.title('Edad Promedio por Nacionalidad y Año')
-    plt.xticks(rotation=90)
-    plt.tight_layout()
-    plt.show()
+    # Filtrar datos para los años 2019 y 2022
+    df_2019_2022 = df_perfil_turistico[df_perfil_turistico['Año'].isin([2019, 2022])]
 
-    # Gráfico de Distribución de Nivel Educativo por Nacionalidad y Año
-    educacion_nacionalidad_ano.plot(kind='bar', stacked=True, figsize=(12, 6), colormap='Pastel2')
-    plt.xlabel('Nacionalidad')
-    plt.ylabel('Número de Turistas')
-    plt.title('Distribución de Nivel Educativo por Nacionalidad y Año (2019 vs 2022)')
-    plt.xticks(rotation=90)
-    plt.legend(title="Nivel Educativo", bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.show()
+    # 1. Edad Promedio por Nacionalidad y Año
+    edad_promedio = df_2019_2022.groupby(['Nacionalidad', 'Año'])['Edad'].mean().unstack()
 
-    # Gráfico de Distribución de Situación Laboral por Nacionalidad y Año
-    laboral_nacionalidad_ano.plot(kind='bar', stacked=True, figsize=(12, 6), colormap='Pastel2')
-    plt.xlabel('Nacionalidad')
-    plt.ylabel('Número de Turistas')
-    plt.title('Distribución de Situación Laboral por Nacionalidad y Año (2019 vs 2022)')
-    plt.xticks(rotation=90)
-    plt.legend(title="Situación Laboral", bbox_to_anchor=(1, 1))
-    plt.tight_layout()
-    plt.show()
+    # 2. Número Promedio de Personas en el Hogar por Nacionalidad y Año
+    personas_hogar_promedio = df_2019_2022.groupby(['Nacionalidad', 'Año'])['Personas_hogar'].mean().unstack()
 
-    # Gráfico de Número Promedio de Personas en el Hogar por Nacionalidad y Año
-    plt.figure(figsize=(12, 6))
-    personas_hogar_nacionalidad_ano.plot(kind='bar', color=['#FF6347', '#87CEFA'], width=0.8)
-    plt.xlabel('Nacionalidad')
-    plt.ylabel('Número Promedio de Personas en el Hogar')
-    plt.title('Número Promedio de Personas en el Hogar por Nacionalidad y Año (2019 vs 2022)')
-    plt.xticks(rotation=90)
-    plt.legend(False)  # This removes the legend
+    # 3. Distribución de Nivel Educativo por Nacionalidad y Año
+    df_2019_2022['Nivel_educativo'] = df_2019_2022['Nivel_educativo'].str.strip()
+    educacion_nacionalidad_ano = df_2019_2022.groupby(['Nacionalidad', 'Año', 'Nivel_educativo']).size().unstack(fill_value=0)
+
+    # 4. Distribución de Situación Laboral por Nacionalidad y Año
+    laboral_nacionalidad_ano = df_2019_2022.groupby(['Nacionalidad', 'Año', 'Situacion_laboral']).size().unstack(fill_value=0)
+
+    # Crear una figura con subgráficos
+    fig, axs = plt.subplots(2, 2, figsize=(16, 12))
+
+    # Gráfico 1: Edad Promedio por Nacionalidad y Año
+    edad_promedio.plot(kind='bar', width=0.8, color=['#FF6347', '#87CEFA'], ax=axs[0, 0])
+    axs[0, 0].set_xlabel('Nacionalidad')
+    axs[0, 0].set_ylabel('Edad Promedio')
+    axs[0, 0].set_title('Edad Promedio por Nacionalidad y Año (2019 vs 2022)')
+    axs[0, 0].tick_params(axis='x', rotation=90)
+    axs[0, 0].legend(title="Año", labels=['2019', '2022'], loc='upper left')
+
+    # Gráfico 2: Número Promedio de Personas en el Hogar por Nacionalidad y Año
+    personas_hogar_promedio.plot(kind='bar', width=0.8, color=['#FF6347', '#87CEFA'], ax=axs[0, 1])
+    axs[0, 1].set_xlabel('Nacionalidad')
+    axs[0, 1].set_ylabel('Número Promedio de Personas en el Hogar')
+    axs[0, 1].set_title('Número Promedio de Personas en el Hogar por Nacionalidad y Año (2019 vs 2022)')
+    axs[0, 1].tick_params(axis='x', rotation=90)
+    axs[0, 1].legend(title="Año", labels=['2019', '2022'], loc='upper left')
+
+    # Gráfico 3: Distribución de Nivel Educativo por Nacionalidad y Año
+    educacion_nacionalidad_ano.plot(kind='bar', stacked=True, width=0.8, colormap='Pastel2', ax=axs[1, 0])
+    axs[1, 0].set_xlabel('Nacionalidad')
+    axs[1, 0].set_ylabel('Número de Personas')
+    axs[1, 0].set_title('Nivel Educativo por Nacionalidad y Año (2019 vs 2022)')
+    axs[1, 0].tick_params(axis='x', rotation=90)
+    axs[1, 0].legend(title="Nivel Educativo", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    # Gráfico 4: Distribución de Situación Laboral por Nacionalidad y Año
+    laboral_nacionalidad_ano.plot(kind='bar', stacked=True, width=0.8, colormap='Pastel1', ax=axs[1, 1])
+    axs[1, 1].set_xlabel('Nacionalidad')
+    axs[1, 1].set_ylabel('Número de Personas')
+    axs[1, 1].set_title('Situación Laboral por Nacionalidad y Año (2019 vs 2022)')
+    axs[1, 1].tick_params(axis='x', rotation=90)
+    axs[1, 1].legend(title="Situación Laboral", bbox_to_anchor=(1.05, 1), loc='upper left')
+
+    # Ajustar el diseño para evitar solapamientos
     plt.tight_layout()
     plt.show()
 
