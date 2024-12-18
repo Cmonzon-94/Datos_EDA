@@ -259,17 +259,30 @@ def plot_tipo_alojamiento_por_cuatrimestre(preferencia_alojamiento_2019, prefere
     usando un gráfico de barras apiladas."""
 
 def plot_recomendacion_por_nacionalidad(recomendacion_nacionalidad_2022):
-    # Crear el gráfico de barras apiladas
-    plt.figure(figsize=(12, 6))
-    recomendacion_nacionalidad_2022.plot(kind='bar', stacked=True, colormap='coolwarm')
-    # Ajustes para mejorar la visualización
-    plt.xlabel('Nacionalidad')
-    plt.ylabel('Número de Turistas')
-    plt.title('Recomendación del destino por Nacionalidad en 2022')
-    plt.xticks(rotation=90)  # Rotar etiquetas del eje X para mayor legibilidad
-    plt.legend(title='Recomendación', bbox_to_anchor=(1, 1))  # Colocar la leyenda a la derecha
-    plt.tight_layout()  # Ajuste de los elementos para evitar solapamientos
-    # Mostrar el gráfico
+    # Configurar colores
+    colores = ['#76C7C0', '#FF6F61']
+
+    # Crear subgráficos para separar totales y porcentajes
+    fig, axes = plt.subplots(2, 1, figsize=(12, 12), gridspec_kw={'height_ratios': [2, 1]})
+
+    # Gráfico de barras apiladas: Conteo absoluto de "Sí" y "No"
+    recomendacion_nacionalidad_2022[['Sí', 'No']].plot(kind='bar', stacked=True, ax=axes[0], color=colores)
+    axes[0].set_title('Número de Turistas que Repetirían el Viaje por Nacionalidad (2022)')
+    axes[0].set_xlabel('Nacionalidad')
+    axes[0].set_ylabel('Número de Turistas')
+    axes[0].legend(title='Repetiría', loc='upper right')
+    axes[0].tick_params(axis='x', rotation=90)
+
+    # Gráfico de líneas: Porcentaje de respuestas afirmativas
+    recomendacion_nacionalidad_2022['Porcentaje_Sí'].plot(kind='line', ax=axes[1], color='#76C7C0', marker='o', label='Porcentaje Sí')
+    recomendacion_nacionalidad_2022['Porcentaje_No'].plot(kind='line', ax=axes[1], color='#FF6F61', marker='o', label='Porcentaje No')
+    axes[1].set_title('Porcentaje de Turistas que Repetirían el Viaje por Nacionalidad (2022)')
+    axes[1].set_xlabel('Nacionalidad')
+    axes[1].set_ylabel('Porcentaje (%)')
+    axes[1].legend(loc='upper right')
+    axes[1].tick_params(axis='x', rotation=90)
+
+    plt.tight_layout()
     plt.show()
 
 #Graficar el perfil sociodemográfico 
